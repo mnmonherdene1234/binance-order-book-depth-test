@@ -1,7 +1,7 @@
 import { GetPriceDto } from "../dto/get-price.dto";
 import { Order } from "../dto/order.dto";
 
-async function fetchOrders(pair: string, limit: number) {
+export async function fetchOrders(pair: string, limit: number) {
   const response = await fetch(
     `https://api.binance.com/api/v3/depth?limit=${limit}&symbol=${pair}`
   );
@@ -26,7 +26,7 @@ async function fetchOrders(pair: string, limit: number) {
   };
 }
 
-async function getPrice(pair: string): Promise<number> {
+export async function getPrice(pair: string): Promise<number> {
   const response = await fetch(
     `https://www.binance.com/api/v3/ticker/price?symbol=${pair}`
   );
@@ -36,7 +36,7 @@ async function getPrice(pair: string): Promise<number> {
   return +data.price;
 }
 
-function averagePrice(orders: Order[]): number {
+export function averagePrice(orders: Order[]): number {
   let sum = 0;
 
   for (let i = 0; i < orders.length; i++) {
@@ -46,7 +46,7 @@ function averagePrice(orders: Order[]): number {
   return sum / orders.length;
 }
 
-function averageAmount(orders: Order[]): number {
+export function averageAmount(orders: Order[]): number {
   let sum = 0;
 
   for (let i = 0; i < orders.length; i++) {
@@ -56,14 +56,14 @@ function averageAmount(orders: Order[]): number {
   return sum / orders.length;
 }
 
-function percentageDifference(a: number, b: number): number {
+export function percentageDifference(a: number, b: number): number {
   return 100 * Math.abs((a - b) / ((a + b) / 2));
 }
 
-function sortByAmountDesc(orders: Order[]): Order[] {
+export function sortByAmountDesc(orders: Order[]): Order[] {
   return orders.sort((a, b) => (a.amount < b.amount ? 1 : -1));
 }
 
-function sortByAmountAsc(orders: Order[]): Order[] {
+export function sortByAmountAsc(orders: Order[]): Order[] {
   return orders.sort((a, b) => (a.amount > b.amount ? 1 : -1));
 }
