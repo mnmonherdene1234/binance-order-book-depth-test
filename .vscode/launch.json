@@ -10,7 +10,7 @@
         "name": "Binance API",
         "program": "${workspaceFolder}/src/main.ts",
         "preLaunchTask": "tsc: build - tsconfig.json",
-        "outFiles": ["${workspaceFolder}/build/**/*.js"]
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"]
       }
     ]
   }

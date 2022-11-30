@@ -1,3 +1,4 @@
+import { client } from "../binance";
 import { GetPriceDto } from "../dto/get-price.dto";
 import { Order } from "../dto/order.dto";
 
@@ -66,4 +67,27 @@ export function sortByAmountDesc(orders: Order[]): Order[] {
 
 export function sortByAmountAsc(orders: Order[]): Order[] {
   return orders.sort((a, b) => (a.amount > b.amount ? 1 : -1));
+}
+
+export enum LongShort {
+  Long = "LONG",
+  Short = "SHORT",
+}
+
+export async function LongOrShort(
+  symbol: string,
+  limit: 5 | 10 | 20 | 50 | 100 | 500 | 1000 | 5000 = 5000
+) {
+  const { bids, asks } = await client.getOrderBook({
+    symbol,
+    limit,
+  });
+  const bidsAvg = bids.reduce((pre, cur) => (pre += +cur[1]), 0) / limit;
+  const asksAvg = asks.reduce((pre, cur) => (pre += +cur[1]), 0) / limit;
+
+  if (bidsAvg > asksAvg) {
+    return LongShort.Long;
+  } else {
+    return LongShort.Short;
+  }
 }
